@@ -102,5 +102,8 @@
       }
     }
   },
-  "defaultProject": "Apartment-Marketplace-UI"
+  "defaultProject": "Apartment-Marketplace-UI",
+  "cli": {
+    "analytics": "58eb21fe-d2aa-46b2-a21a-1935dda3c036"
+  }
 }
