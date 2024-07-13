@@ -1,0 +1,17 @@
+<div>
+    <label for="sort">Sort by:</label>
+    <select id="sort" (change)="onSortChange($event.target.value)">
+      <option value="priceAsc">Price - lowest to highest</option>
+      <option value="priceDesc">Price - highest to lowest</option>
+    </select>
+  
+    <label for="filter">Filter by rooms:</label>
+    <input id="filter" type="number" (input)="onFilterChange($event.target.value)" placeholder="Number of rooms">
+  
+    <div *ngFor="let apartment of filteredApartments">
+      <div>
+        {{apartment.name}} / {{apartment.rooms}} bed / {{apartment.description}} / ${{apartment.price}}
+        <button (click)="deleteApartment(apartment.id)">Delete</button>
+      </div>
+    </div>
+  </div>

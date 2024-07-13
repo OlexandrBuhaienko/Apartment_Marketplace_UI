@@ -3,7 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ApartmentMarketplaceComponent } from "./features/apartment-marketplace/apartment-marketplace.component";
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { ApartmentMarketplaceModule } from './features/apartment/modules/apartment-marketplace.module';
 
 @NgModule({
   declarations: [
@@ -12,9 +13,11 @@ import { ApartmentMarketplaceComponent } from "./features/apartment-marketplace/
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ApartmentMarketplaceComponent
+    ApartmentMarketplaceModule,
 ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
