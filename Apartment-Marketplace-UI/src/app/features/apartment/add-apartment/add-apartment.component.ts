@@ -4,7 +4,7 @@ import { OnDestroy } from '@angular/core';
 import { AddApartmentRequest } from '../models/add-apartment-request.model';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-apartment',

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ApartmentMarketplaceModule } from './features/apartment/modules/apartment-marketplace.module';
 
 @Component({
   selector: 'app-root',
