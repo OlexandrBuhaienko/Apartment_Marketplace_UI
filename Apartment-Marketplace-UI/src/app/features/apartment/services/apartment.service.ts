@@ -27,6 +27,7 @@ export class ApartmentService {
     if (price) {
       params = params.append('price', price);
     }
+    console.log(this.http.get<Apartment[]>(`${environment.apiBaseUrl}/apartments`, {params}));
     return this.http.get<Apartment[]>(`${environment.apiBaseUrl}/apartments`, {params});
   }
 

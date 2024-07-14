@@ -1,3 +1,4 @@
+import { ApartmentListComponent } from './../apartment-list/apartment-list.component';
 import { ApartmentService } from '../services/apartment.service';
 import { Component } from '@angular/core';
 import { OnDestroy } from '@angular/core';
@@ -5,6 +6,7 @@ import { AddApartmentRequest } from '../models/add-apartment-request.model';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { UpdateApartmentRequest } from '../models/update-apartment-request.model';
 
 @Component({
   selector: 'app-add-apartment',
@@ -19,7 +21,6 @@ export class AddApartmentComponent  implements OnDestroy{
 
   model: AddApartmentRequest;
   private addApartmentSubscription ?: Subscription;
-
   constructor(private apartmentService: ApartmentService, private router : Router){
     this.model = {
       Name: '',

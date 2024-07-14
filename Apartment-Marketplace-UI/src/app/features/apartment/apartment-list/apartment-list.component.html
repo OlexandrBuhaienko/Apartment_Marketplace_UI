@@ -1,26 +1,40 @@
-<div class="container d-flex justify-content-center mt-5">
-  <div class="card p-4 shadow-sm" style="width: 400px;">
+<div class="container d-flex justify-content-center mb-5">
+  <div class="card p-4 shadow-sm w-75" >
     <h3 class="text-center mb-4">Apartment Marketplace</h3>
+
+   
+
+    <div class="mb-3 w-50">
+      <div class="row">
+        <div class="col">
+          <label for="price" class="form-label">Sort by:</label>
+          <select id="price" class="form-select" [(ngModel)]="price" (change)="applyFilters()">
+            <option value="asc">Price - lowest to highest</option>
+            <option value="desc">Price - highest to lowest</option>
+          </select>
+        </div>
     
-    <div class="mb-3">
-      <label for="rooms" class="form-label">Filter by rooms:</label>
-      <input id="rooms" type="number" class="form-control" [(ngModel)]="rooms" min="0" (input)="applyFilters()">
+        <div class="col">
+          <label for="rooms" class="form-label">Beds:</label>
+          <input id="rooms" type="number" class="form-control" [(ngModel)]="rooms" min="0" (input)="applyFilters()">
+        </div>
+      </div>
     </div>
-
-    <div class="mb-3">
-      <label for="price" class="form-label">Sort by price:</label>
-      <select id="price" class="form-select" [(ngModel)]="price" (change)="applyFilters()">
-        <option value="asc">Price - lowest to highest</option>
-        <option value="desc">Price - highest to lowest</option>
-      </select>
-    </div>
-
-    <ul class="list-group">
-      <li *ngFor="let apartment of apartments$ | async as apartments" class="list-group-item d-flex justify-content-between align-items-center">
-        {{apartment.Rooms}} / ${{apartment.Price}} / {{apartment.Name}}
-        <button class="btn btn-danger btn-sm" (click)="deleteApartment(apartment.Id)">Delete</button>
-      </li>
-    </ul>
+    
+    <ng-container *ngIf="(apartments$ | async) as apartments">
+      <ul class="list-group">
+    
+        <li *ngFor="let apartment of apartments" class="list-group-item d-flex justify-content-between align-items-center">
+          {{ apartment?.name }} / {{ apartment?.rooms }} beds | ${{ apartment?.price }}
+          
+          <div class="btn-group">
+            <!-- <button class="btn btn-primary btn-sm me-2" (click)="editApartment(apartment)">Edit</button> -->
+            <button class="btn btn-primary btn-sm me-2" (click)="editApartment(apartment.id)">Edit</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteApartment(apartment.id)">Delete</button>
+          </div>
+        </li>
+      </ul>
+  </ng-container>
 
     <ng-template #noData *ngIf="!(apartments$ | async)?.length">
       <p class="text-center text-muted mt-3">No apartments available</p>

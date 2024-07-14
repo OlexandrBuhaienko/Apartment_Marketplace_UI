@@ -1,7 +1,7 @@
 export interface Apartment {
-    Id: string;
-    Name: string;
-    Rooms: number;
-    Price: number;
-    Description: string;
+    id: string;
+    name: string;
+    rooms: number;
+    price: number;
+    description: string;
   }
