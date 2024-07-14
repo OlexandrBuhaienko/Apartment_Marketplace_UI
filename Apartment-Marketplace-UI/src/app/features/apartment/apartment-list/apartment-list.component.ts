@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { map, Observable, Subscription } from 'rxjs';
 import { Apartment } from '../models/apartment.model';
 import { ApartmentService } from '../services/apartment.service';
@@ -15,11 +15,14 @@ import { UpdateApartmentRequest } from '../models/update-apartment-request.model
 })
 export class ApartmentListComponent implements OnInit, OnDestroy {
   editApartmentId: string | null = null;
+  @Output() editApartment = new EventEmitter<string>();
   apartments$?: Observable<Apartment[]>;
   deleteApartmentSubscription: Subscription = new Subscription();
   getApartmentsSubscription: Subscription = new Subscription();
   rooms?: number;
   price: string = 'asc';
+  filteredApartmentsCount: number = 0;
+
 
   constructor(private apartmentService: ApartmentService) {}
   ngOnDestroy(): void {
@@ -40,6 +43,7 @@ export class ApartmentListComponent implements OnInit, OnDestroy {
     //Виводимо данні про об'єкт в консоль, щоб перевірити, чи інформація з API отримується коректно
     this.apartments$.subscribe((apartments) => {
       if (apartments.length) {
+        this.filteredApartmentsCount = apartments.length;
         console.log(apartments);
         //console.log(JSON.stringify(apartments, null, 2)); // null, 2 для форматування
       }
@@ -50,8 +54,9 @@ export class ApartmentListComponent implements OnInit, OnDestroy {
     this.loadApartments();
   }
 
-  editApartment(id: string): void {
+  onEditApartment(id: string): void {
     this.editApartmentId = id;
+    this.editApartment.emit(id);
   }
 
   onApartmentUpdated(): void {

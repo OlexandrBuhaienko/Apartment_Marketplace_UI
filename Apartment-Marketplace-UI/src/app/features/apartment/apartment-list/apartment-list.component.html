@@ -1,23 +1,25 @@
 <div class="container d-flex justify-content-center mb-5">
   <div class="card p-4 shadow-sm w-75" >
-    <h3 class="text-center mb-4">Apartment Marketplace</h3>
+    <h3 class="text-center mb-4">Available apartments {{ filteredApartmentsCount }}</h3>
 
    
 
     <div class="mb-3 w-50">
       <div class="row">
-        <div class="col">
+        <div class="col sort-filter">
           <label for="price" class="form-label">Sort by:</label>
           <select id="price" class="form-select" [(ngModel)]="price" (change)="applyFilters()">
             <option value="asc">Price - lowest to highest</option>
             <option value="desc">Price - highest to lowest</option>
           </select>
         </div>
+        
     
         <div class="col">
           <label for="rooms" class="form-label">Beds:</label>
           <input id="rooms" type="number" class="form-control" [(ngModel)]="rooms" min="0" (input)="applyFilters()">
         </div>
+        
       </div>
     </div>
     
@@ -29,7 +31,7 @@
           
           <div class="btn-group">
             <!-- <button class="btn btn-primary btn-sm me-2" (click)="editApartment(apartment)">Edit</button> -->
-            <button class="btn btn-primary btn-sm me-2" (click)="editApartment(apartment.id)">Edit</button>
+            <button class="btn btn-primary btn-sm me-2" (click)="onEditApartment(apartment.id)">Edit</button>
             <button class="btn btn-danger btn-sm" (click)="deleteApartment(apartment.id)">Delete</button>
           </div>
         </li>

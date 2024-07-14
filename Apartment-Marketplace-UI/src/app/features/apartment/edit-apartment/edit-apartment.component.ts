@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ApartmentService } from '../services/apartment.service';
 import { UpdateApartmentRequest } from '../models/update-apartment-request.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Apartment } from '../models/apartment.model';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-edit-apartment',
@@ -14,36 +14,36 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './edit-apartment.component.html',
   styleUrl: './edit-apartment.component.css',
 })
-export class EditApartmentComponent implements OnInit, OnDestroy{
-  id: string | null = null;
-  paramsSubscription?: Subscription;
+export class EditApartmentComponent implements OnInit, OnDestroy {
+  @Input() apartmentId: string | null = null;
+  @Output() editCompleted = new EventEmitter<void>();
   editApartmentSubscription?: Subscription;
+  getApartmentSubscription?: Subscription;
   apartment?: Apartment;
 
   constructor(
     private route: ActivatedRoute,
-    private apartmentService: ApartmentService,
-    private router: Router
+    private apartmentService: ApartmentService
   ) {}
 
   ngOnInit(): void {
-    this.paramsSubscription = this.route.paramMap.subscribe({
-      next: (params) => {
-        this.id = params.get('id'); //Name of the id variable, have to be the same as the last variable
-        // inside the path of EditApartmentComponent in the app-routing.module.ts file!
-        if (this.id) {
-          // get the data from the API for this category Id
-          this.apartmentService.getApartmentById(this.id).subscribe({
-            next: (response) => {
-              this.apartment = response;
-            },
-          });
-        }
-      },
-    });
+    if (this.apartmentId) {
+    }
+    if (this.apartmentId) {
+      console.log('Fetching apartment data for ID:', this.apartmentId);
+      // get the data from the API for this category Id
+      this.getApartmentSubscription = this.apartmentService
+        .getApartmentById(this.apartmentId)
+        .subscribe({
+          next: (response) => {
+            this.apartment = response;
+          },
+        });
+    }
   }
 
   onFormSubmit(): void {
+    if (!this.apartment) return;
     const updateApartmentRequest: UpdateApartmentRequest = {
       Name: this.apartment?.name ?? '',
       Rooms: this.apartment?.rooms ?? 1,
@@ -51,18 +51,18 @@ export class EditApartmentComponent implements OnInit, OnDestroy{
       Description: this.apartment?.description ?? '',
     };
     //pass the object to service
-    if (this.id) {
+    if (this.apartmentId) {
       this.editApartmentSubscription = this.apartmentService
-        .updateApartment(this.id, updateApartmentRequest)
+        .updateApartment(this.apartmentId, updateApartmentRequest)
         .subscribe({
           next: (response) => {
-            this.router.navigateByUrl('/apartments');
+            this.editCompleted.emit();
           },
         });
     }
   }
-  ngOnDestroy(): void{
-    this.paramsSubscription?.unsubscribe();
+  ngOnDestroy(): void {
     this.editApartmentSubscription?.unsubscribe();
+    this.getApartmentSubscription?.unsubscribe();
   }
 }

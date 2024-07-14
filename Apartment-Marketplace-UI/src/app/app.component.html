@@ -1,2 +1,7 @@
-<app-add-apartment></app-add-apartment>
-<app-apartment-list></app-apartment-list>
+<div class="container">
+    <ng-container [ngSwitch]="isEditing">
+      <app-add-apartment *ngSwitchDefault (apartmentAdded)="reloadApartments()"></app-add-apartment>
+      <app-edit-apartment *ngSwitchCase="true" [apartmentId]="editApartmentId" (editCompleted)="onEditCompleted()"></app-edit-apartment>
+    </ng-container>
+    <app-apartment-list (editApartment)="onEditApartment($event)"></app-apartment-list>
+  </div>
