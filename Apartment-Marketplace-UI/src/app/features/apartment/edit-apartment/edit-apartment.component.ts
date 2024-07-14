@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ApartmentService } from '../services/apartment.service';
 import { UpdateApartmentRequest } from '../models/update-apartment-request.model';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Apartment } from '../models/apartment.model';
 import { Subscription } from 'rxjs';
@@ -42,7 +42,7 @@ export class EditApartmentComponent implements OnInit, OnDestroy {
     }
   }
 
-  onFormSubmit(): void {
+  onFormSubmit(form: NgForm): void {
     if (!this.apartment) return;
     const updateApartmentRequest: UpdateApartmentRequest = {
       Name: this.apartment?.name ?? '',

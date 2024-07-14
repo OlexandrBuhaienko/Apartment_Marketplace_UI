@@ -2,7 +2,7 @@
     <h1 class="mt-3">Edit Apartment</h1>
 
     <ng-container *ngIf="apartment; else notFound">
-        <form #form="ngForm" (ngSubmit)="onFormSubmit()">
+        <form #form="ngForm" (ngSubmit)="onFormSubmit(form)">
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label" for="apartmentId">Apartment Id</label>
@@ -19,7 +19,13 @@
                            id="apartmentName"
                            class="form-control"
                            name="apartmentName"
-                           [(ngModel)]="apartment.name">
+                           [(ngModel)]="apartment.name"
+                           required
+                           maxlength="99">
+                        <div *ngIf="form.submitted && form.controls.apartmentName?.invalid" class="text-danger">
+                            <small *ngIf="form.controls.apartmentName?.errors?.required">Apartment name is required.</small>
+                            <small *ngIf="form.controls.apartmentName?.errors?.maxlength">Max length is 99 characters.</small>
+                        </div>
                 </div>
 
                 <div class="col-md-6 mb-3">
@@ -28,7 +34,13 @@
                            id="apartmentRoomsNumber"
                            class="form-control"
                            name="apartmentRoomsNumber"
-                           [(ngModel)]="apartment.rooms">
+                           [(ngModel)]="apartment.rooms"
+                           required
+                           min="1">
+                        <div *ngIf="form.submitted && form.controls.apartmentRoomsNumber?.invalid" class="text-danger">
+                            <small *ngIf="form.controls.apartmentRoomsNumber?.errors?.required">Number of rooms is required.</small>
+                            <small *ngIf="form.controls.apartmentRoomsNumber?.errors?.min">Must be at least 1.</small>
+                        </div>
                 </div>
 
                 <div class="col-md-6 mb-3">
@@ -37,7 +49,13 @@
                            id="apartmentPrice"
                            class="form-control"
                            name="apartmentPrice"
-                           [(ngModel)]="apartment.price">
+                           [(ngModel)]="apartment.price"
+                           required
+                           min="1">
+                        <div *ngIf="form.submitted && form.controls.apartmentPrice?.invalid" class="text-danger">
+                            <small *ngIf="form.controls.apartmentPrice?.errors?.required">Price is required.</small>
+                            <small *ngIf="form.controls.apartmentPrice?.errors?.min">Must be at least 1.</small>
+                        </div>
                 </div>
 
                 <div class="col-md-12 mb-3">
@@ -46,11 +64,15 @@
                               class="form-control"
                               name="apartmentDescription"
                               [(ngModel)]="apartment.description"
-                              rows="3"></textarea>
+                              rows="3"
+                              maxlength="999"></textarea>
+                            <div *ngIf="form.submitted && form.controls.apartmentDescription?.errors?.maxlength" class="text-danger">
+                                <small>Max length is 999 characters.</small>
+                            </div>
                 </div>
 
-                <div class="col-md-12 d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                <div class="mt-3 d-flex">
+                    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
                 </div>
             </div>
         </form>
