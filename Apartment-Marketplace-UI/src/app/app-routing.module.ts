@@ -5,14 +5,14 @@ import { EditApartmentComponent } from './features/apartment/edit-apartment/edit
 import { AddApartmentComponent } from './features/apartment/add-apartment/add-apartment.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/apartments', pathMatch: 'full' },
+  { path: '', redirectTo: 'apartments', pathMatch: 'full' },
   { path: 'apartments', component: ApartmentListComponent },
   {
-    path: '/categories/add',
+    path: 'apartments/add',
     component: AddApartmentComponent
   }, 
   {
-    path: '/apartments/:id',
+    path: 'apartments/:id',
     component: EditApartmentComponent
   },
 ];

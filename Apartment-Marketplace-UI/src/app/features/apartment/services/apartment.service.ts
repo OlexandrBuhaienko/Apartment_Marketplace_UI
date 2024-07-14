@@ -14,10 +14,10 @@ export class ApartmentService {
 
   constructor(private http: HttpClient) {}
   addApartment(model:AddApartmentRequest): Observable<void>{
-    return this.http.post<void>(`${environment.apiBaseUrl}/api/apartments`, model);
+    return this.http.post<void>(`${environment.apiBaseUrl}/apartments`, model);
   }
   
-  getAllApartments(rooms?: number, price?: string): Observable<Apartment[]> {
+  getAllApartments(rooms?: number, price: string = 'asc'): Observable<Apartment[]> {
     let params = new HttpParams();
     
     if (rooms != null) {
@@ -27,16 +27,16 @@ export class ApartmentService {
     if (price) {
       params = params.append('price', price);
     }
-    return this.http.get<Apartment[]>(`${environment.apiBaseUrl}/api/apartments`, {params});
+    return this.http.get<Apartment[]>(`${environment.apiBaseUrl}/apartments`, {params});
   }
 
   getApartmentById (id: string): Observable<Apartment>{
-    return this.http.get<Apartment>(`${environment.apiBaseUrl}/api/apartments/${id}`);
+    return this.http.get<Apartment>(`${environment.apiBaseUrl}/apartments/${id}`);
   }
   updateApartment(id: string, updateApartmentRequest: UpdateApartmentRequest): Observable<Apartment> {
-    return this.http.put<Apartment>(`${environment.apiBaseUrl}/api/apartments/${id}`, updateApartmentRequest);
+    return this.http.put<Apartment>(`${environment.apiBaseUrl}/apartments/${id}`, updateApartmentRequest);
   }
   deleteApartment(id: string): Observable<Apartment>{
-    return this.http.delete<Apartment>(`${environment.apiBaseUrl}/api/apartments/${id}`);
+    return this.http.delete<Apartment>(`${environment.apiBaseUrl}/apartments/${id}`);
   }
 }

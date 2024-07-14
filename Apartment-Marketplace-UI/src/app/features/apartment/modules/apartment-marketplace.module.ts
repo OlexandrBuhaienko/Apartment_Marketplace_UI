@@ -7,7 +7,6 @@ import { EditApartmentComponent } from '../edit-apartment/edit-apartment.compone
 
 
 
-
 @NgModule({
   declarations: [
   ],
@@ -15,7 +14,7 @@ import { EditApartmentComponent } from '../edit-apartment/edit-apartment.compone
     CommonModule,
     ApartmentListComponent,
     AddApartmentComponent,
-    EditApartmentComponent
+    EditApartmentComponent,
   ],
   exports: [
     ApartmentListComponent,
