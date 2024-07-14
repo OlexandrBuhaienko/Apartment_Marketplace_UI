@@ -1,28 +1,64 @@
-<div *ngIf="apartmentId">
-    <h3 class="text-center mb-4">Edit Apartment</h3>
+<div class="container">
+    <h1 class="mt-3">Edit apartment</h1>
+
+    <ng-container *ngIf="apartment; else notFound">
     <form #form="ngForm" (ngSubmit)="onFormSubmit()">
-      <div class="mb-2 d-flex">
-        <div class="me-2 w-50">
-          <label class="form-label">Apartment Name</label>
-          <input type="text" id="apartmentName" class="form-control" name="apartmentName" [(ngModel)]="model.Name" required>
+        <div class="mt-2">
+            <div class="mt-3">
+                <label class="form-label" for="apartmentId">Category Id</label>
+                <input type="text" disabled
+                id="apartmentId"
+                class="form-control"
+                name="apartmentId"
+                value="{{apartment.id}}">
+            </div>
+
+            <div class="mt-3">
+                <label class="form-label" for="apartmentName">Category Name</label>
+                <input type="text"
+                id="apartmentName"
+                class="form-control"
+                name="apartmentName"
+                [(ngModel)] = "apartment.name">
+            </div>
+
+            <div class="mt-3">
+                <label class="form-label" for="apartmentRoomsNumber">Rooms Number</label>
+                <input type="text" 
+                id="apartmentRoomsNumber"
+                class="form-control"
+                name="apartmentRoomsNumber"
+                [(ngModel)] = "apartment.rooms">
+            </div>
+
+            <div class="mt-3">
+                <label class="form-label" for="apartmentPrice">Price</label>
+                <input type="text" 
+                id="apartmentPrice"
+                class="form-control"
+                name="apartmentPrice"
+                [(ngModel)] = "apartment.price">
+            </div>
+
+            <div class="mt-3">
+                <label class="form-label" for="apartmentDescription">Description</label>
+                <input type="text" 
+                id="apartmentDescription"
+                class="form-control"
+                name="apartmentDescription"
+                [(ngModel)] = "apartment.description">
+            </div>
+
+            <div class="mt-3 d-flex">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
         </div>
-        <div class="me-2 w-50">
-          <label class="form-label">Rooms Number</label>
-          <input type="number" id="apartmentRoomsNumber" class="form-control" name="apartmentRoomsNumber" [(ngModel)]="model.Rooms" required>
-        </div>
-      </div>
-      <div class="mb-2 d-flex">
-        <div class="me-2 w-50">
-          <label class="form-label">Price</label>
-          <input type="number" id="apartmentPrice" class="form-control" name="apartmentPrice" [(ngModel)]="model.Price" required>
-        </div>
-        <div class="me-2 w-50">
-          <label class="form-label">Description</label>
-          <textarea id="apartmentDescription" class="form-control" name="apartmentDescription" [(ngModel)]="model.Description" rows="3" style="resize: vertical;"></textarea>
-        </div>
-      </div>
-      <div class="mt-3">
-        <button class="btn btn-primary" type="submit">Edit</button>
-      </div>
     </form>
-  </div>
+
+    </ng-container>
+    <ng-template #notFound>
+        <div class="alert alert-warning" role="alert">
+            Apartment not found!
+        </div>
+    </ng-template>
+</div>

@@ -1,8 +1,6 @@
 <div class="container d-flex justify-content-center mt-3 mb-3">
     <div class="card p-4 shadow-sm w-75">
       <h3 class="text-center mb-4">Add Apartment</h3>
-  
-      < #form="ngForm" (ngSubmit)="onFormSubmit()">
         <div class="row mb-2">
           <div class="col">
             <label for="apartmentName" class="form-label">Apartment Name</label>
@@ -26,11 +24,7 @@
             <textarea id="apartmentDescription" class="form-control" name="apartmentDescription" [(ngModel)]="model.Description" required rows="3"></textarea>
           </div>
         </div>
-  
-
-        <!-- <div class="mt-3">
-            <button class="btn btn-primary" type="submit">{{ isEditMode ? 'Edit' : 'Save' }}</button>
-        </div>-->
+          
         <div class="text-center">
           <button class="btn btn-primary" type="submit">Save</button>
         </div>

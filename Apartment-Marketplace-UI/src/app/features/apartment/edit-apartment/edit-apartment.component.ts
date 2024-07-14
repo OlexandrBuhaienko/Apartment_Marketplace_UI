@@ -1,64 +1,68 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApartmentService } from '../services/apartment.service';
 import { UpdateApartmentRequest } from '../models/update-apartment-request.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Apartment } from '../models/apartment.model';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+
 @Component({
   selector: 'app-edit-apartment',
   standalone: true,
-  imports:[FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './edit-apartment.component.html',
-  styleUrl: './edit-apartment.component.css'
+  styleUrl: './edit-apartment.component.css',
 })
-export class EditApartmentComponent {
-  @Input() apartmentId: string | null = null;
-  @Output() apartmentUpdated = new EventEmitter<void>();
+export class EditApartmentComponent implements OnInit, OnDestroy{
+  id: string | null = null;
+  paramsSubscription?: Subscription;
+  editApartmentSubscription?: Subscription;
+  apartment?: Apartment;
 
-  model: UpdateApartmentRequest = {
-    Name: '',
-    Rooms: 0,
-    Price: 0,
-    Description: ''
-  };
+  constructor(
+    private route: ActivatedRoute,
+    private apartmentService: ApartmentService,
+    private router: Router
+  ) {}
 
-  constructor(private apartmentService: ApartmentService) {}
-
-  ngOnChanges() {
-    if (this.apartmentId) {
-      this.apartmentService.getApartmentById(this.apartmentId).subscribe({
-        next: (apartment) => {
-          this.model = {
-            Name: apartment.name,
-            Rooms: apartment.rooms,
-            Price: apartment.price,
-            Description: apartment.description,
-          };
-        },
-        error: (error) => {
-          console.log('Error fetching apartment details', error);
+  ngOnInit(): void {
+    this.paramsSubscription = this.route.paramMap.subscribe({
+      next: (params) => {
+        this.id = params.get('id'); //Name of the id variable, have to be the same as the last variable
+        // inside the path of EditApartmentComponent in the app-routing.module.ts file!
+        if (this.id) {
+          // get the data from the API for this category Id
+          this.apartmentService.getApartmentById(this.id).subscribe({
+            next: (response) => {
+              this.apartment = response;
+            },
+          });
         }
-      });
-    }
+      },
+    });
   }
 
-  onFormSubmit() {
-    if (this.apartmentId) {
-      this.apartmentService.updateApartment(this.apartmentId, this.model).subscribe({
-        next: () => {
-          console.log('Apartment updated successfully!');
-          this.apartmentUpdated.emit();
-        },
-        error: () => {
-          console.log('Error updating apartment.');
-        },
-      });
+  onFormSubmit(): void {
+    const updateApartmentRequest: UpdateApartmentRequest = {
+      Name: this.apartment?.name ?? '',
+      Rooms: this.apartment?.rooms ?? 1,
+      Price: this.apartment?.price ?? 1,
+      Description: this.apartment?.description ?? '',
+    };
+    //pass the object to service
+    if (this.id) {
+      this.editApartmentSubscription = this.apartmentService
+        .updateApartment(this.id, updateApartmentRequest)
+        .subscribe({
+          next: (response) => {
+            this.router.navigateByUrl('/apartments');
+          },
+        });
     }
   }
-  editApartment(apartment: Apartment): void {
-    const addApartmentComponent = document.querySelector('app-add-apartment') as any;
-    if (addApartmentComponent) {
-      addApartmentComponent.setEditApartment(apartment);
-    }
+  ngOnDestroy(): void{
+    this.paramsSubscription?.unsubscribe();
+    this.editApartmentSubscription?.unsubscribe();
   }
 }
